@@ -25,8 +25,6 @@ def get_headlines():
     titles = '...'.join([i for i in titles])
     return titles
 
-titles = get_headlines()
-print(titles)
 #This is just to see in the browser
 #not related to alexa skill
 @app.route("/")
