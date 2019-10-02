@@ -9,10 +9,14 @@ app = Flask(__name__)
 ask = Ask(app,"/reddit_reader")
 
 def get_headlines():
-    user_pass_dict = {'user':'anandhkishan','passwd':'test123123','api_type':'json'}
+    user_pass_dict = {'user':'[REDDIT_USERNAME]','passwd':'[REDDIT_PASSWORD]','api_type':'json'}
     sess = requests.Session()
-    sess.headers.update({'User-Agent':'I am a alexa developer now :D'})
+    #this is needed by reddit incase to ratelimit if there are more  requests
+    #from particular user-agent
+    #explained here: https://youtu.be/oJ6MBvzgPcQ
+    sess.headers.update({'User-Agent':'Fetching data for alexa'})
     sess.post('https://www.reddit.com/api/login',data= user_pass_dict)
+    #sleeping here to avoid blocking/ratelimiting by reddit for more hits/sec
     time.sleep(1)
     url = "https://reddit.com/r/worldnews/.json?limit=5"
     html = sess.get(url)
@@ -23,6 +27,8 @@ def get_headlines():
 
 titles = get_headlines()
 print(titles)
+#This is just to see in the browser
+#not related to alexa skill
 @app.route("/")
 def homepage():
     return "hey ya! wassup dude?"
